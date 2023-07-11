@@ -1,0 +1,19 @@
+html,
+body{
+  margin: 0;
+  padding: 0;
+}
+.wave{
+  box-shadow:  0 0 0 10px currentcolor;
+  position:absolute;
+  background: transparent;
+  pointer-events: none;
+  box-sizing: border-box;
+  opacity: 0.2;
+  transition: box-shadow 2s ease,opacity 2s ease
+}
+
+.wave-hide{
+  opacity: 0;
+  box-shadow: 0 0 0 0 currentColor;
+}
