@@ -7,7 +7,7 @@ function App() {
     height: 30,
     borderRadius: 8,
     margin: 100,
-    borderColor: 'blue',
+    borderColor: 'red',
   }
 
   return (

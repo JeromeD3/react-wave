@@ -17,6 +17,26 @@ const WaveEffect: React.FC<WaveEffectProps> = (props) => {
   const [waveLeft, setwaveLeft] = useState<number>(0)
 
   const [waveBorderRadius, setWaveBorderRadius] = useState<string[]>([])
+  const divRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    divRef.current?.classList.add('wave')
+
+    const ob = new ResizeObserver(syncStyle)
+
+    ob.observe(target)
+
+    const id = requestAnimationFrame(() => {
+      syncStyle()
+      divRef.current!.style.boxShadow = '0 0 0 10px currentcolor'
+      divRef.current?.classList.add('wave-hide')
+    })
+
+    return () => {
+      ob.disconnect()
+      cancelAnimationFrame(id)
+    }
+  }, [])
 
   const style: React.CSSProperties = {
     width: waveWidth,
@@ -38,14 +58,15 @@ const WaveEffect: React.FC<WaveEffectProps> = (props) => {
       borderBottomRightRadius,
     } = getComputedStyle(target)
 
-    getWaveColor(target)
     setwaveWidth(target.offsetWidth)
     setwaveHeight(target.offsetHeight)
-    setwaveColor(getWaveColor(target))
 
     const isStatic = position === 'static'
+
     setwaveTop(isStatic ? target.offsetTop : -parseFloat(borderTopWidth))
     setwaveLeft(isStatic ? target.offsetLeft : -parseFloat(borderLeftWidth))
+    setwaveColor(getWaveColor(target))
+
     setWaveBorderRadius([
       borderTopLeftRadius,
       borderTopRightRadius,
@@ -54,23 +75,10 @@ const WaveEffect: React.FC<WaveEffectProps> = (props) => {
     ])
   }
 
-  useEffect(() => {
-    const ob = new ResizeObserver(syncStyle)
-    ob.observe(target)
-
-    const id = requestAnimationFrame(() => {
-      syncStyle()
-      divRef.current?.classList.add('wave-hide')
-    })
-    return () => {
-      ob.disconnect()
-      cancelAnimationFrame(id)
-    }
-  }, [])
-
   const callback = () => {
     divRef.current?.parentElement?.remove()
   }
+
   useEffect(() => {
     divRef.current?.addEventListener('transitionend', callback)
     return () => {
@@ -78,8 +86,7 @@ const WaveEffect: React.FC<WaveEffectProps> = (props) => {
     }
   }, [])
 
-  const divRef = useRef<HTMLDivElement>(null)
-  return <div style={style} className="wave " ref={divRef} />
+  return <div style={style} ref={divRef} className="" />
 }
 
 export const showWaveEffect = (node: HTMLDivElement) => {

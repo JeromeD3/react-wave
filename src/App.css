@@ -4,13 +4,13 @@ body{
   padding: 0;
 }
 .wave{
-  box-shadow:  0 0 0 10px currentcolor;
+  box-shadow: 0 0 0 0 currentColor;
   position:absolute;
   background: transparent;
   pointer-events: none;
   box-sizing: border-box;
   opacity: 0.2;
-  transition: box-shadow 2s ease,opacity 2s ease
+  transition: box-shadow 1s ease,opacity 1s ease
 }
 
 .wave-hide{
